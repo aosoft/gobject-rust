@@ -5,7 +5,7 @@ use glib::ObjectExt;
 use crate::foo::FooExt;
 
 fn main() {
-    let mut foo = glib::object::Object::new::<foo::Foo>(&[]);
+    let foo = glib::object::Object::new::<foo::Foo>(&[]);
     println!("{}", foo.ref_count());
 
     println!("{}, {}", foo.a(), foo.b());
@@ -13,7 +13,7 @@ fn main() {
     foo.set_b(20);
     println!("{}, {}", foo.a(), foo.b());
 
-    let mut bar = glib::object::Object::new::<bar::Bar>(&[]);
+    let bar = glib::object::Object::new::<bar::Bar>(&[]);
     println!("{}", bar.ref_count());
 
     println!("{}, {}, {}, {}", bar.a(), bar.b(), bar.c(), bar.d());
