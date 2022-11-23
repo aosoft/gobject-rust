@@ -1,7 +1,7 @@
-use glib::IsA;
 use glib::subclass::object::ObjectImpl;
 use glib::subclass::types::{IsSubclassable, ObjectSubclassIsExt};
 use glib::translate::ToGlibPtr;
+use glib::{IsA, ObjectExt};
 
 pub(crate) mod imp;
 
@@ -65,9 +65,44 @@ pub trait FooExt {
     fn set_b(&self, value: i32);
 }
 
+/*
 impl<O: IsA<Foo>> FooExt for O {
     fn a(&self) -> i32 { self.as_ref().imp().a() }
     fn set_a(&self, value: i32) { self.as_ref().imp().set_a(value) }
     fn b(&self) -> i32 { self.as_ref().imp().b() }
     fn set_b(&self, value: i32) { self.as_ref().imp().set_b(value) }
+}
+*/
+
+impl<O: IsA<Foo>> FooExt for O {
+    fn a(&self) -> i32 {
+        unsafe {
+            let klass = self.as_ref().class();
+            (klass.as_ref().get_a.unwrap())(self.as_ref().imp() as *const imp::Foo as *mut imp::Foo)
+        }
+    }
+    fn set_a(&self, value: i32) {
+        unsafe {
+            let klass = self.as_ref().class();
+            (klass.as_ref().set_a.unwrap())(
+                self.as_ref().imp() as *const imp::Foo as *mut imp::Foo,
+                value,
+            )
+        }
+    }
+    fn b(&self) -> i32 {
+        unsafe {
+            let klass = self.as_ref().class();
+            (klass.as_ref().get_b.unwrap())(self.as_ref().imp() as *const imp::Foo as *mut imp::Foo)
+        }
+    }
+    fn set_b(&self, value: i32) {
+        unsafe {
+            let klass = self.as_ref().class();
+            (klass.as_ref().set_b.unwrap())(
+                self.as_ref().imp() as *const imp::Foo as *mut imp::Foo,
+                value,
+            )
+        }
+    }
 }
