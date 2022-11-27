@@ -9,6 +9,11 @@ pub struct Foo {
     pub b: RefCell<i32>,
 }
 
+impl Drop for Foo {
+    fn drop(&mut self) {
+        println!("dropped Foo")
+    }
+}
 
 
 #[glib::object_subclass]
@@ -27,10 +32,10 @@ impl ObjectSubclass for Foo {
     }
 
     fn class_init(klass: &mut Self::Class) {
-        klass.get_a = Some(super::ffi::get_a);
-        klass.set_a = Some(super::ffi::set_a);
-        klass.get_b = Some(super::ffi::get_b);
-        klass.set_b = Some(super::ffi::set_b);
+        klass.get_a = Some(super::ffi::foo_get_a);
+        klass.set_a = Some(super::ffi::foo_set_a);
+        klass.get_b = Some(super::ffi::foo_get_b);
+        klass.set_b = Some(super::ffi::foo_set_b);
     }
 }
 

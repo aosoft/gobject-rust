@@ -18,22 +18,26 @@ unsafe impl ClassStruct for FooClass {
     type Type = super::imp::Foo;
 }
 
-pub unsafe extern "C" fn get_a(this: *mut Foo) -> i32 {
+#[no_mangle]
+pub unsafe extern "C" fn foo_get_a(this: *mut Foo) -> i32 {
     let instance = &*(this as *const <super::imp::Foo as ObjectSubclass>::Instance);
     instance.imp().a()
 }
 
-pub unsafe extern "C" fn set_a(this: *mut Foo, value: i32) {
+#[no_mangle]
+pub unsafe extern "C" fn foo_set_a(this: *mut Foo, value: i32) {
     let instance = &*(this as *const <super::imp::Foo as ObjectSubclass>::Instance);
     instance.imp().set_a(value)
 }
 
-pub unsafe extern "C" fn get_b(this: *mut Foo) -> i32 {
+#[no_mangle]
+pub unsafe extern "C" fn foo_get_b(this: *mut Foo) -> i32 {
     let instance = &*(this as *const <super::imp::Foo as ObjectSubclass>::Instance);
     instance.imp().b()
 }
 
-pub unsafe extern "C" fn set_b(this: *mut Foo, value: i32) {
+#[no_mangle]
+pub unsafe extern "C" fn foo_set_b(this: *mut Foo, value: i32) {
     let instance = &*(this as *const <super::imp::Foo as ObjectSubclass>::Instance);
     instance.imp().set_b(value)
 }

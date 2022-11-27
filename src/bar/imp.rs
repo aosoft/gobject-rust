@@ -1,7 +1,7 @@
 use std::cell::RefCell;
 use glib::subclass::InitializingObject;
 use glib::subclass::object::ObjectImpl;
-use glib::subclass::types::{ClassStruct, ObjectSubclass, ObjectSubclassIsExt};
+use glib::subclass::types::{ObjectSubclass, ObjectSubclassIsExt};
 use crate::foo::FooImpl;
 
 #[derive(Default)]
@@ -10,13 +10,10 @@ pub struct Bar {
     pub d: RefCell<i32>,
 }
 
-#[repr(C)]
-pub struct BarClass {
-    pub parent_class: crate::foo::ffi::FooClass,
-}
-
-unsafe impl ClassStruct for BarClass {
-    type Type = Bar;
+impl Drop for Bar {
+    fn drop(&mut self) {
+        println!("dropped Bar")
+    }
 }
 
 #[glib::object_subclass]
@@ -25,7 +22,7 @@ impl ObjectSubclass for Bar {
     const ABSTRACT: bool = false;
     type ParentType = crate::foo::Foo;
     type Type = super::Bar;
-    type Class = BarClass;
+    type Class = super::ffi::BarClass;
 
     fn instance_init(_obj: &InitializingObject<Self>) {
         unsafe {
