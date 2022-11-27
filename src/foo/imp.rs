@@ -1,5 +1,5 @@
 use glib::subclass::object::ObjectImpl;
-use glib::subclass::types::{ClassStruct, ObjectSubclass, ObjectSubclassIsExt};
+use glib::subclass::types::{ObjectSubclass, ObjectSubclassIsExt};
 use glib::subclass::InitializingObject;
 use std::cell::RefCell;
 
@@ -10,25 +10,13 @@ pub struct Foo {
 }
 
 
-#[repr(C)]
-pub struct FooClass {
-    pub parent_class: glib::gobject_ffi::GObjectClass,
-    pub get_a:Option<unsafe extern "C" fn(*mut Foo) -> i32>,
-    pub set_a:Option<unsafe extern "C" fn(*mut Foo, value: i32)>,
-    pub get_b:Option<unsafe extern "C" fn(*mut Foo) -> i32>,
-    pub set_b:Option<unsafe extern "C" fn(*mut Foo, value: i32)>,
-}
-
-unsafe impl ClassStruct for FooClass {
-    type Type = Foo;
-}
 
 #[glib::object_subclass]
 impl ObjectSubclass for Foo {
     const NAME: &'static str = "Foo";
     const ABSTRACT: bool = false;
     type Type = super::Foo;
-    type Class = FooClass;
+    type Class = super::ffi::FooClass;
 
     fn instance_init(_obj: &InitializingObject<Self>) {
         unsafe {
@@ -39,10 +27,10 @@ impl ObjectSubclass for Foo {
     }
 
     fn class_init(klass: &mut Self::Class) {
-        klass.get_a = Some(get_a);
-        klass.set_a = Some(set_a);
-        klass.get_b = Some(get_b);
-        klass.set_b = Some(set_b);
+        klass.get_a = Some(super::ffi::get_a);
+        klass.set_a = Some(super::ffi::set_a);
+        klass.get_b = Some(super::ffi::get_b);
+        klass.set_b = Some(super::ffi::set_b);
     }
 }
 
@@ -63,7 +51,3 @@ impl Foo {
     }
 }
 
-unsafe extern "C" fn get_a(this: *mut Foo) -> i32 { (*this).a() }
-unsafe extern "C" fn set_a(this: *mut Foo, value: i32) { (*this).set_a(value) }
-unsafe extern "C" fn get_b(this: *mut Foo) -> i32 { (*this).b() }
-unsafe extern "C" fn set_b(this: *mut Foo, value: i32) { (*this).set_b(value) }

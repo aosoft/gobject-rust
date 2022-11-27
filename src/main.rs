@@ -12,7 +12,7 @@ fn main() {
     foo.set_a(10);
     foo.set_b(20);
     println!("{}, {}", foo.a(), foo.b());
-
+/*
     let bar = glib::object::Object::new::<bar::Bar>(&[]);
     println!("{}", bar.ref_count());
 
@@ -22,4 +22,6 @@ fn main() {
     bar.set_c(30);
     bar.set_d(40);
     println!("{}, {}, {}, {}", bar.a(), bar.b(), bar.c(), bar.d());
+
+ */
 }

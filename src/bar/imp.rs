@@ -12,7 +12,7 @@ pub struct Bar {
 
 #[repr(C)]
 pub struct BarClass {
-    pub parent_class: crate::foo::imp::FooClass,
+    pub parent_class: crate::foo::ffi::FooClass,
 }
 
 unsafe impl ClassStruct for BarClass {
