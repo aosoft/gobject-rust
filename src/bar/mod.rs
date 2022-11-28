@@ -1,5 +1,5 @@
-mod imp;
-mod ffi;
+pub(crate) mod ffi;
+pub(crate) mod imp;
 
 use glib::subclass::types::ObjectSubclassIsExt;
 use crate::foo;
