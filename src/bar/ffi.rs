@@ -1,4 +1,6 @@
+use glib::ObjectType;
 use glib::subclass::types::{ClassStruct, InstanceStructExt, ObjectSubclass};
+use glib::translate::{IntoGlib, ToGlibPtr};
 
 #[repr(C)]
 pub struct Bar {
@@ -12,6 +14,17 @@ pub struct BarClass {
 
 unsafe impl ClassStruct for BarClass {
     type Type = super::imp::Bar;
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn bar_new() -> *mut Bar {
+    let obj = glib::object::Object::new::<super::Bar>(&[]);
+    obj.as_object_ref().to_glib_full() as *mut Bar
+}
+
+#[no_mangle]
+pub extern "C" fn bar_get_type() -> glib::ffi::GType {
+    <super::Bar as glib::StaticType>::static_type().into_glib()
 }
 
 #[no_mangle]
