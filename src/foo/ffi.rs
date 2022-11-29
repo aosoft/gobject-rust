@@ -2,10 +2,13 @@ use glib::ObjectType;
 use glib::subclass::types::{ClassStruct, InstanceStructExt, ObjectSubclass};
 use glib::translate::{IntoGlib, ToGlibPtr};
 
+/*
 #[repr(C)]
 pub struct Foo {
     pub parent: glib::gobject_ffi::GObject,
 }
+ */
+pub type Foo = <super::imp::Foo as ObjectSubclass>::Instance;
 
 #[repr(C)]
 pub struct FooClass {
@@ -33,24 +36,20 @@ pub extern "C" fn foo_get_type() -> glib::ffi::GType {
 
 #[no_mangle]
 pub unsafe extern "C" fn foo_get_a(this: *mut Foo) -> i32 {
-    let instance = &*(this as *const <super::imp::Foo as ObjectSubclass>::Instance);
-    instance.imp().a()
+    (*this).imp().a()
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn foo_set_a(this: *mut Foo, value: i32) {
-    let instance = &*(this as *const <super::imp::Foo as ObjectSubclass>::Instance);
-    instance.imp().set_a(value)
+    (*this).imp().set_a(value)
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn foo_get_b(this: *mut Foo) -> i32 {
-    let instance = &*(this as *const <super::imp::Foo as ObjectSubclass>::Instance);
-    instance.imp().b()
+    (*this).imp().b()
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn foo_set_b(this: *mut Foo, value: i32) {
-    let instance = &*(this as *const <super::imp::Foo as ObjectSubclass>::Instance);
-    instance.imp().set_b(value)
+    (*this).imp().set_b(value)
 }
