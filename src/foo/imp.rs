@@ -39,6 +39,8 @@ impl ObjectSubclass for Foo {
     }
 }
 
+pub trait FooImpl: ObjectImpl + 'static {}
+
 impl ObjectImpl for Foo {}
 
 impl Foo {

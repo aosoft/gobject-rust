@@ -1,4 +1,3 @@
-use glib::subclass::object::ObjectImpl;
 use glib::subclass::types::{IsSubclassable, ObjectSubclassExt, ObjectSubclassIsExt};
 use glib::{IsA, ObjectExt, ObjectType};
 
@@ -9,9 +8,7 @@ glib::wrapper! {
     pub struct Foo(ObjectSubclass<imp::Foo>);
 }
 
-pub trait FooImpl: ObjectImpl + 'static {}
-
-unsafe impl<T: FooImpl> IsSubclassable<T> for Foo {}
+unsafe impl<T: imp::FooImpl> IsSubclassable<T> for Foo {}
 
 pub trait FooExt {
     fn a(&self) -> i32;
@@ -39,20 +36,9 @@ impl<O: IsA<Foo>> FooExt for O {
         }
     }
     fn b(&self) -> i32 {
-        unsafe {
-            let klass = self.as_ref().class();
-            (klass.as_ref().get_b.unwrap())(
-                self.as_ref().imp().instance().as_ptr() as *mut ffi::Foo
-            )
-        }
+        self.as_ref().imp().b()
     }
     fn set_b(&self, value: i32) {
-        unsafe {
-            let klass = self.as_ref().class();
-            (klass.as_ref().set_b.unwrap())(
-                self.as_ref().imp().instance().as_ptr() as *mut ffi::Foo,
-                value,
-            )
-        }
+        self.as_ref().imp().set_b(value)
     }
 }

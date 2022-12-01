@@ -2,7 +2,7 @@ use std::cell::RefCell;
 use glib::subclass::InitializingObject;
 use glib::subclass::object::ObjectImpl;
 use glib::subclass::types::{ObjectSubclass, ObjectSubclassIsExt};
-use crate::foo::FooImpl;
+use crate::foo::imp::FooImpl;
 
 #[derive(Default)]
 pub struct Bar {
