@@ -1,5 +1,5 @@
 use glib::subclass::object::ObjectImpl;
-use glib::subclass::types::{ObjectSubclass, ObjectSubclassIsExt};
+use glib::subclass::types::{ObjectSubclass, ObjectSubclassIsExt, InstanceStructExt};
 use glib::subclass::InitializingObject;
 use std::cell::RefCell;
 
@@ -32,8 +32,8 @@ impl ObjectSubclass for Foo {
     }
 
     fn class_init(klass: &mut Self::Class) {
-        klass.get_a = Some(super::ffi::foo_get_a);
-        klass.set_a = Some(super::ffi::foo_set_a);
+        klass.get_a = Some(foo_get_a);
+        klass.set_a = Some(foo_set_a);
     }
 }
 
@@ -54,5 +54,13 @@ impl Foo {
     pub fn set_b(&self, value: i32) {
         *(self.b.borrow_mut()) = value;
     }
+}
+
+unsafe extern "C" fn foo_get_a(this: *mut super::ffi::Foo) -> i32 {
+    (*this).imp().a()
+}
+
+unsafe extern "C" fn foo_set_a(this: *mut super::ffi::Foo, value: i32) {
+    (*this).imp().set_a(value)
 }
 

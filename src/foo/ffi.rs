@@ -1,6 +1,7 @@
 use glib::ObjectType;
-use glib::subclass::types::{ClassStruct, InstanceStructExt, ObjectSubclass};
+use glib::subclass::types::{ClassStruct, InstanceStructExt, ObjectSubclass, ObjectSubclassExt};
 use glib::translate::{IntoGlib, ToGlibPtr};
+use super::FooExt;
 
 /*
 #[repr(C)]
@@ -34,12 +35,12 @@ pub extern "C" fn foo_get_type() -> glib::ffi::GType {
 
 #[no_mangle]
 pub unsafe extern "C" fn foo_get_a(this: *mut Foo) -> i32 {
-    (*this).imp().a()
+    (*this).imp().instance().a()
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn foo_set_a(this: *mut Foo, value: i32) {
-    (*this).imp().set_a(value)
+    (*this).imp().instance().set_a(value)
 }
 
 #[no_mangle]
