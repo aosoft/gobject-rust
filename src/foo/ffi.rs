@@ -15,8 +15,6 @@ pub struct FooClass {
     pub parent_class: glib::gobject_ffi::GObjectClass,
     pub get_a:Option<unsafe extern "C" fn(*mut Foo) -> i32>,
     pub set_a:Option<unsafe extern "C" fn(*mut Foo, value: i32)>,
-    pub get_b:Option<unsafe extern "C" fn(*mut Foo) -> i32>,
-    pub set_b:Option<unsafe extern "C" fn(*mut Foo, value: i32)>,
 }
 
 unsafe impl ClassStruct for FooClass {
